@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block header %}
+    <div class="container my-5">
+        <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
+            <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
+                <h1 class="display-4 fw-bold lh-1">Система управления заказами</h1>
+                <p class="lead">Управляй заказами и своей жизнью эффективно!</p>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mb-4 mb-lg-3">
+                            <a
+                                    class="nav-link "
+                                    href="{% url 'orders:add_order' %}">Создай новый заказ</a>
+                    </div>
+            </div>
+
+            <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
+                <img class="rounded-lg-3" src="/media/index.jpg" alt="" width="720">
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block content %}
+    {% load thumbnail %}
+    <div class="album py-5 bg-light">
+    <div class="container">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Номер стола</th>
+                    <th scope="col">Список блюд</th>
+                    <th scope="col">Сумма</th>
+                    <th scope="col">Статус</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+                {% for order in page %}
+                    <tr>
+                        <th scope="row">1</th>
+                        <td> <div class="card-body">
+                                <a href="{% url 'orders:order' order.id %}">{{ order.id }}</a>
+                            </div></td>
+                        <td>{{ order.table_number }}</td>
+                        <td>{{ order.dishes.all }}</td>
+                        <td>{{ order.total_price }}</td>
+                        <td>{{ order.status }}</td>
+
+                    </tr>
+                {% endfor %}
+                    </tbody>
+                    </table>
+
+        </div>
+    </div>
+
+    {% if page.has_other_pages %}
+        {% include "includes/paginator.html" with items=page paginator=paginator %}
+    {% endif %}
+{% endblock %}
+
+</div>
+
