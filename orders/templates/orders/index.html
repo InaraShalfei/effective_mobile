@@ -46,7 +46,7 @@
                                 <a href="{% url 'orders:order' order.id %}">{{ order.id }}</a>
                             </div></td>
                         <td>{{ order.table_number }}</td>
-                        <td>{{ order.dishes.all }}</td>
+                        <td>{% for dish in order.dishes.all %}{{ dish.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
                         <td>{{ order.total_price }}</td>
                         <td>{{ order.status }}</td>
 

@@ -1,36 +1,33 @@
-<button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
-                data-target="#confirmModal{{ order.id }}">
-            Удалить
-        </button>
-        <div class="modal fade" id="confirmModal{{ order.id }}" tabindex="-1"
-             aria-labelledby="confirmModalLabel{{ order.id }}" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="confirmModalLabel{{ order.id }}">Подтверждение удаления</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        Вы уверены, что хотите удалить заказ?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
-                        <form method="post"
-                              id="delete_order_form{{ order.id }}"
-                              action="{% url 'orders:delete_order' order.id %}">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-danger" data-toggle="modal"
-                                    data-target="#confirmModal{{ order.id }}">
-                                Удалить
-                            </button>
-                        </form>
+{% extends "base.html" %}
+{% load user_filters %}
+{% block content %}
+    <div class="row justify-content-center">
+        <div class="col-md-8 p-5">
+            <div class="card text-center">
+                <div class="card-header">Подтверждение удаления</div>
+                <div class="card-body p-5">
+                    <h5 class="card-title">Вы уверены, что хотите удалить заказ?</h5>
+
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col">
+                            <a href="{% url 'orders:order' order.id %}" class="btn btn-secondary">Отмена</a>
+                        </div>
+                        <div class="col">
+                            <form method="post"
+                                  id="delete_order_form{{ order.id }}"
+                                  action="{% url 'orders:delete_order' order.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">
+                                    Удалить
+                                </button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
-            </div>
+        </div>
+    </div>
 
-<script>
-    submitAsynchronously('delete_order_form{{ order.id }}');
-</script>
+{% endblock %}

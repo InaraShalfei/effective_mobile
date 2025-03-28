@@ -27,7 +27,13 @@ def add_order(request):
             order.status = 'Pending'
             order.save()
             dishes_form = formset_factory(request.POST)
-            print(dishes_form.cleaned_data)
+            for dish_data in dishes_form.cleaned_data:
+                if 'name' in dish_data and 'price' in dish_data:
+                    dish = OrderDish()
+                    dish.order = order
+                    dish.name = dish_data['name']
+                    dish.price = dish_data['price']
+                    dish.save()
 
             return redirect('/orders')
         context = {"order_form": order_form}
@@ -49,7 +55,8 @@ def delete_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     if request.method == 'POST':
         order.delete()
-    return redirect('/orders/order/')
+        return redirect('/orders/')
+    return render(request, 'orders/delete_order.html', {'order': order})
 
 
 def page_not_found(request, exception):

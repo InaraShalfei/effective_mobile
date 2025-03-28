@@ -4,7 +4,7 @@
 {% block content %}
 
 
-<div class="container">
+    <div class="container">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'orders:index' %}">Заказы</a></li>
@@ -12,16 +12,16 @@
         </ol>
     </nav>
 
-<div class="card">
-  <h5 class="card-header">Заказ для столика {{ order.table_number }}</h5>
-  <div class="card-body">
-    <h5 class="card-title">Special title treatment</h5>
-    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-    <a href="{% url 'orders:delete_order' order.id %}">{{ order.id }} class="btn btn-danger" role="button">Удалить заказ</a>
-      <a href="#" class="btn btn-primary">Изменить статус заказа</a>
-  </div>
-</div>
+    <div class="card">
+        <h5 class="card-header">Заказ для столика {{ order.table_number }}</h5>
+        <div class="card-body">
+            <h5 class="card-title">Сумма заказа: {{ order.total_price }}</h5>
+            <p class="card-text">Состав заказа: {% for dish in order.dishes.all %}{{ dish.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            <a href="{% url 'orders:delete_order' order.id %}" class="btn btn-danger">Удалить заказ</a>
+            <a href="#" class="btn btn-primary">Изменить статус заказа</a>
+        </div>
+    </div>
 
 
-    {% endblock %}
+{% endblock %}
 </div>
