@@ -30,3 +30,15 @@ class OrderDishForm(forms.ModelForm):
     class Meta:
         model = OrderDish
         fields = ['order', 'name', 'price']
+
+
+class UpdateOrderForm(forms.ModelForm):
+    class Meta:
+        model = Order
+        fields = ['status']
+
+    status = forms.ChoiceField(
+        choices=Order.STATUSES,
+        widget=forms.Select(attrs={'class': 'form-control', 'id': 'choice-select'}),
+        label=''
+    )

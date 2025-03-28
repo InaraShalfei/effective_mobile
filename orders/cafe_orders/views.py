@@ -1,6 +1,6 @@
 from django.forms import inlineformset_factory
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import OrderForm, OrderDishForm
+from .forms import OrderForm, OrderDishForm, UpdateOrderForm
 from .models import Order, OrderDish
 from django.core.paginator import Paginator
 from django.conf import settings
@@ -46,9 +46,17 @@ def add_order(request):
 
 def order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
-    order_form = OrderForm(instance=order)
+    if request.method == 'POST':
+        form = UpdateOrderForm(request.POST, instance=order)
+        if form.is_valid():
+            print(form.cleaned_data)
+            order.status = form.cleaned_data.get('status')
+            order.save()
+            return redirect('/orders/')
+    else:
+        form = UpdateOrderForm(instance=order)
 
-    return render(request, 'orders/order.html', {'order': order, 'form': order_form})
+    return render(request, 'orders/order.html', {'order': order, 'form': form})
 
 
 def delete_order(request, order_id):

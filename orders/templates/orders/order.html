@@ -12,13 +12,27 @@
         </ol>
     </nav>
 
+
     <div class="card">
         <h5 class="card-header">Заказ для столика {{ order.table_number }}</h5>
         <div class="card-body">
             <h5 class="card-title">Сумма заказа: {{ order.total_price }}</h5>
             <p class="card-text">Состав заказа: {% for dish in order.dishes.all %}{{ dish.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            <div class="row justify-content-center">
+        <div class="col-md-8 p-5">
+            <div class="card">
+                <div class="card-header">Изменить статус</div>
+                <div class="card-body p-5">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
             <a href="{% url 'orders:delete_order' order.id %}" class="btn btn-danger">Удалить заказ</a>
-            <a href="#" class="btn btn-primary">Изменить статус заказа</a>
         </div>
     </div>
 
