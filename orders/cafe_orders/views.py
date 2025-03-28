@@ -1,4 +1,5 @@
 from django.forms import inlineformset_factory
+from django.db.models import Sum, Count, F, ExpressionWrapper, IntegerField
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import OrderForm, OrderDishForm, UpdateOrderForm
 from .models import Order, OrderDish
@@ -13,6 +14,16 @@ def index(request):
     page = paginator.get_page(page_number)
     return render(request, 'orders/index.html', {
         'page': page, 'paginator': paginator, 'orders': orders
+    })
+
+
+def order_statistics(request):
+    orders_by_status = Order.objects.values('status').annotate(total_sum=Sum('dishes__price'), total_count=Count('id')).order_by('status')
+    paginator = Paginator(orders_by_status, settings.ITEMS_PER_PAGE)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'orders/statistics.html', {
+        'page': page, 'paginator': paginator
     })
 
 

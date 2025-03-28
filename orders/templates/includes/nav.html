@@ -7,21 +7,21 @@
             <span style="color:gray">Заказы</span>
         </span>
             </a>
-            {% if user.is_authenticated %}
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="{% url 'orders:add_order'%}" class="nav-link px-2 text-white">Создай новый заказ</a></li>
+                <li><a href="{% url 'orders:statistics'%}" class="nav-link px-2 text-white">Расчет выручки</a></li>
                 <li><a href="{% url 'password_change' %}" class="nav-link px-2 text-white">Изменить
                     пароль</a></li>
                 <li><a href="{% url 'logout' %}" class="nav-link px-2 text-white">Выйти</a></li>
             </ul>
-            {% else %}
+
             <div class="text-end">
                 <button type="button" class="btn btn-outline-light me-2"><a class="nav-link " href="{% url 'login' %}">Войти</a>
                 </button>
                 <button type="button" class="btn btn-warning"><a class="nav-link " href="{% url 'users:signup' %}">Регистрация</a>
                 </button>
             </div>
-            {% endif %}
+
         </div>
     </div>
 </header>

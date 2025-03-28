@@ -33,9 +33,10 @@ class Order(models.Model):
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
 
-    def save(self, *args, **kwargs):
-        # self.total_price = sum([dish.price for dish in self.dishes.all()])
-        super().save(*args, **kwargs)
+    @property
+    def order_total_price(self):
+        self.total_price = sum([dish.price for dish in self.dishes.all()])
+        return self.total_price
 
     def __str__(self):
         return f"Заказ {self.id} - Стол {self.table_number} - Статус: {self.status}"

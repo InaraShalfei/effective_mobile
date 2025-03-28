@@ -3,8 +3,7 @@
     <div class="container my-5">
         <div class="row p-4 pb-0 pe-lg-0 pt-lg-5 align-items-center rounded-3 border shadow-lg">
             <div class="col-lg-7 p-3 p-lg-5 pt-lg-3">
-                <h1 class="display-4 fw-bold lh-1">Система управления заказами</h1>
-                <p class="lead">Управляй заказами и своей жизнью эффективно!</p>
+                <h1 class="display-4 fw-bold lh-1">Расчет выручки в разрезе статусов заказов</h1>
             </div>
 
             <div class="col-lg-4 offset-lg-1 p-0 overflow-hidden shadow-lg">
@@ -24,11 +23,9 @@
                 <thead>
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">ID</th>
-                    <th scope="col">Номер стола</th>
-                    <th scope="col">Список блюд</th>
-                    <th scope="col">Сумма</th>
-                    <th scope="col">Статус</th>
+                    <th scope="col">Статус заказа</th>
+                    <th scope="col">Общее количество заказов</th>
+                    <th scope="col">Общая сумма заказов</th>
                 </tr>
 
                 </thead>
@@ -37,18 +34,14 @@
                 {% for order in page %}
                     <tr>
                         <th scope="row">1</th>
-                        <td> <div class="card-body">
-                                <a href="{% url 'orders:order' order.id %}">{{ order.id }}</a>
-                            </div></td>
-                        <td>{{ order.table_number }}</td>
-                        <td>{% for dish in order.dishes.all %}{{ dish.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</td>
-                        <td>{{ order.order_total_price }}</td>
                         <td>{{ order.status }}</td>
+                        <td>{{ order.total_count }}</td>
+                        <td>{{ order.total_sum }}</td>
 
                     </tr>
                 {% endfor %}
-                    </tbody>
-                    </table>
+                </tbody>
+            </table>
 
         </div>
     </div>
