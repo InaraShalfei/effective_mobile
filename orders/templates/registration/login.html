@@ -11,7 +11,7 @@
       <div class="card-body">
         {% if form.errors %}
         <div class="alert alert-danger" role="alert">
-          Имя пользоваетеля и пароль не совпадают. Введите правильные данные.
+          Имя пользователя и пароль не совпадают. Введите правильные данные.
         </div>
         {% endif %}
 
@@ -42,7 +42,7 @@
                   {{ form.password|addclass:"form-control" }}
               </div>
           </div>
-
+<br><br>
           <div class="col-md-6 offset-md-4">
               <button type="submit" class="btn btn-primary">
                 Войти

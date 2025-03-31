@@ -21,7 +21,7 @@ urlpatterns = [
     path('auth/', include('users.urls', namespace='users')),
     path('auth/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path('orders/', include('cafe_orders.urls', namespace='orders')),
+    path('', include('cafe_orders.urls', namespace='orders')),
     path('', include('static_pages.urls', namespace='static_pages')),
 ]
 

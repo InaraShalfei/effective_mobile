@@ -1,4 +1,5 @@
 from django.forms import inlineformset_factory
+from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Count
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import OrderForm, OrderDishForm, UpdateOrderForm
@@ -26,6 +27,7 @@ def index(request):
     })
 
 
+@login_required
 def order_statistics(request):
     orders_by_status = Order.objects.values('status').annotate(total_sum=Sum('dishes__price'), total_count=Count('id', distinct=True)).order_by('status')
     paginator = Paginator(orders_by_status, settings.ITEMS_PER_PAGE)
@@ -36,7 +38,9 @@ def order_statistics(request):
     })
 
 
+@login_required
 def add_order(request):
+    # TODO check form contains dishes before saving
     formset_factory = inlineformset_factory(Order, OrderDish, form=OrderDishForm, fields=['name', 'price'],
                                             can_delete=False)
     if request.method == 'POST':
@@ -74,18 +78,19 @@ def order(request, order_id):
         if form.is_valid():
             order.status = form.cleaned_data.get('status')
             order.save()
-            return redirect('/orders/')
+            return redirect('/')
     else:
         form = UpdateOrderForm(instance=order)
 
     return render(request, 'orders/order.html', {'order': order, 'form': form})
 
 
+@login_required
 def delete_order(request, order_id):
     order = get_object_or_404(Order, id=order_id)
     if request.method == 'POST':
         order.delete()
-        return redirect('/orders/')
+        return redirect('/')
     return render(request, 'orders/delete_order.html', {'order': order})
 
 
