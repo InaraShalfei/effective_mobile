@@ -16,6 +16,16 @@
 {% endblock %}
 {% block content %}
     {% load thumbnail %}
+    <form method="get" action="{% url 'orders:search' %}">
+            <div class="row">
+                <div class="col-md-4">
+                    <input type="text" class="form-control" name="q" id="search" placeholder="Поиск заказов..." value="{{ request.GET.q }}">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary btn-block">Найти</button>
+                </div>
+            </div>
+        </form>
     <div class="album py-5 bg-light">
     <div class="container">
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">

@@ -1,10 +1,14 @@
 from django.forms import inlineformset_factory
-from django.db.models import Sum, Count, F, ExpressionWrapper, IntegerField
+from django.db.models import Sum, Count
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import OrderForm, OrderDishForm, UpdateOrderForm
 from .models import Order, OrderDish
 from django.core.paginator import Paginator
 from django.conf import settings
+
+from collections import OrderedDict
+
+from .search_provider import order_search
 
 
 def index(request):
@@ -78,13 +82,18 @@ def delete_order(request, order_id):
     return render(request, 'orders/delete_order.html', {'order': order})
 
 
+def search(request):
+    el = request.GET.get('q')
+    print(el)
+    results = list(filter(None, list(OrderedDict.fromkeys([order_search(el)]))))
+    print(results)
+
+    return render(request, 'includes/search.html', {'results': results})
+
+
 def page_not_found(request, exception):
     return render(request, 'misc/404.html', {'path': request.path}, status=404)
 
 
 def server_error(request):
     return render(request, 'misc/500.html', status=500)
-
-
-def csrf_failure(request, reason=''):
-    return render(request, 'misc/403.html', status=403)

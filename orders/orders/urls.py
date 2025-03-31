@@ -28,6 +28,8 @@ urlpatterns = [
     path('', include('static_pages.urls', namespace='static_pages')),
 ]
 
+handler404 = 'cafe_orders.views.page_not_found'
+handler500 = 'cafe_orders.views.server_error'
 
 if settings.DEBUG:
     urlpatterns += static(
