@@ -7,6 +7,8 @@ from django.core.paginator import Paginator
 from django.conf import settings
 from django.db.models import Q
 
+PENDING = 'В ожидании'
+
 
 def index(request):
     search_string = request.GET.get('q')
@@ -39,12 +41,14 @@ def add_order(request):
                                             can_delete=False)
     if request.method == 'POST':
         order_form = OrderForm(request.POST)
-        if order_form.is_valid():
+        dishes_form = formset_factory(request.POST)
+
+        if order_form.is_valid() and dishes_form.is_valid():
             order = Order()
             order.table_number = order_form.cleaned_data['table_number']
-            order.status = 'Pending'
+            order.status = PENDING
             order.save()
-            dishes_form = formset_factory(request.POST)
+
             for dish_data in dishes_form.cleaned_data:
                 if 'name' in dish_data and 'price' in dish_data:
                     dish = OrderDish()
@@ -54,7 +58,8 @@ def add_order(request):
                     dish.save()
 
             return redirect('/orders')
-        context = {"order_form": order_form}
+        formset = formset_factory(request.POST, instance=Order())
+        context = {"order_form": order_form, "items_formset": formset}
     else:
         formset = formset_factory(instance=Order())
         context = {"items_formset": formset, 'order_form': OrderForm}
@@ -67,7 +72,6 @@ def order(request, order_id):
     if request.method == 'POST':
         form = UpdateOrderForm(request.POST, instance=order)
         if form.is_valid():
-            print(form.cleaned_data)
             order.status = form.cleaned_data.get('status')
             order.save()
             return redirect('/orders/')

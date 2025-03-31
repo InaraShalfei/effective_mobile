@@ -20,9 +20,9 @@ class CustomUser(AbstractUser):
 
 class Order(models.Model):
     STATUSES = [
-        ('Pending', 'В ожидании'),
-        ('Ready', 'Готово'),
-        ('Paid', 'Оплачено')
+        ('В ожидании', 'В ожидании'),
+        ('Готово', 'Готово'),
+        ('Оплачено', 'Оплачено')
     ]
     table_number = models.PositiveIntegerField(verbose_name='номер стола')
     status = models.CharField(max_length=20, choices=STATUSES, verbose_name='статус заказа')
