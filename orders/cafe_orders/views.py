@@ -5,14 +5,17 @@ from .forms import OrderForm, OrderDishForm, UpdateOrderForm
 from .models import Order, OrderDish
 from django.core.paginator import Paginator
 from django.conf import settings
-
-from collections import OrderedDict
-
-from .search_provider import order_search
+from django.db.models import Q
 
 
 def index(request):
-    orders = Order.objects.all().order_by('-id')
+    search_string = request.GET.get('q')
+    orders = Order.objects
+    if search_string:
+        orders = orders.filter(
+            Q(table_number__icontains=search_string) | Q(status__icontains=search_string)
+        )
+    orders = orders.all().order_by('-id')
     paginator = Paginator(orders, settings.ITEMS_PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -22,7 +25,7 @@ def index(request):
 
 
 def order_statistics(request):
-    orders_by_status = Order.objects.values('status').annotate(total_sum=Sum('dishes__price'), total_count=Count('id')).order_by('status')
+    orders_by_status = Order.objects.values('status').annotate(total_sum=Sum('dishes__price'), total_count=Count('id', distinct=True)).order_by('status')
     paginator = Paginator(orders_by_status, settings.ITEMS_PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -80,15 +83,6 @@ def delete_order(request, order_id):
         order.delete()
         return redirect('/orders/')
     return render(request, 'orders/delete_order.html', {'order': order})
-
-
-def search(request):
-    el = request.GET.get('q')
-    print(el)
-    results = list(filter(None, list(OrderedDict.fromkeys([order_search(el)]))))
-    print(results)
-
-    return render(request, 'includes/search.html', {'results': results})
 
 
 def page_not_found(request, exception):
