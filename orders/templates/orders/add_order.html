@@ -4,12 +4,21 @@
     <div class="row justify-content-center">
         <div class="col-md-8 p-5">
             <div class="card">
-                <div class="card-header">Добавить заказ</div>
+                <div class="card-header text-center"><strong>Добавить заказ</strong></div>
                 <div class="card-body p-5">
                     <form method="post">
                         {% csrf_token %}
                         {{ order_form.as_p }}
-                        {{ items_formset.as_p }}
+                            {% for field in order_form %}
+                    {% if field.errors %}
+                        <ul class="errorlist">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                                {{ items_formset.as_p }}
+                {% endfor %}
                         <button type="submit" class="btn btn-primary">Сохранить</button>
                     </form>
                 </div>

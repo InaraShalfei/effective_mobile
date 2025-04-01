@@ -31,6 +31,18 @@ class OrderDishForm(forms.ModelForm):
         model = OrderDish
         fields = ['order', 'name', 'price']
 
+    def clean_name(self):
+        name = self.cleaned_data.get('name')
+        if not name:
+            raise forms.ValidationError("Нужно указать название хотя бы одного блюда")
+        return name
+
+    def clean_price(self):
+        price = self.cleaned_data.get('price')
+        if not price:
+            raise forms.ValidationError("У блюда должна быть цена")
+        return price
+
 
 class UpdateOrderForm(forms.ModelForm):
     class Meta:
