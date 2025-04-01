@@ -42,9 +42,8 @@ def order_statistics(request):
 
 @login_required
 def add_order(request):
-    # TODO check form contains dishes before saving
     formset_factory = inlineformset_factory(Order, OrderDish, form=OrderDishForm, fields=['name', 'price'],
-                                            can_delete=False)
+                                            can_delete=False, min_num=1, validate_min=True)
     if request.method == 'POST':
         order_form = OrderForm(request.POST)
         dishes_form = formset_factory(request.POST)
@@ -63,7 +62,7 @@ def add_order(request):
                     dish.price = dish_data['price']
                     dish.save()
 
-            return redirect('/orders')
+            return redirect('/')
         formset = formset_factory(request.POST, instance=Order())
         context = {"order_form": order_form, "items_formset": formset}
     else:
