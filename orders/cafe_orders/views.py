@@ -29,7 +29,9 @@ def index(request):
 
 @login_required
 def order_statistics(request):
-    orders_by_status = Order.objects.values('status').annotate(total_sum=Sum('dishes__price'), total_count=Count('id', distinct=True)).order_by('status')
+    orders_by_status = Order.objects.values('status').annotate(
+        total_sum=Sum('dishes__price'),
+        total_count=Count('id', distinct=True)).order_by('status')
     paginator = Paginator(orders_by_status, settings.ITEMS_PER_PAGE)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)

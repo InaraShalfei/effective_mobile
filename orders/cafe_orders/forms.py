@@ -1,5 +1,5 @@
 from django import forms
-from .models import Order, OrderDish
+from .models import Order, OrderDish, STATUSES
 
 
 class OrderForm(forms.ModelForm):
@@ -38,7 +38,7 @@ class UpdateOrderForm(forms.ModelForm):
         fields = ['status']
 
     status = forms.ChoiceField(
-        choices=Order.STATUSES,
+        choices=STATUSES,
         widget=forms.Select(attrs={'class': 'form-control', 'id': 'choice-select'}),
         label=''
     )

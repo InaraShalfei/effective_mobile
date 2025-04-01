@@ -1,6 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+STATUSES = [
+    ('В ожидании', 'В ожидании'),
+    ('Готово', 'Готово'),
+    ('Оплачено', 'Оплачено')
+]
+
 
 class CustomUser(AbstractUser):
     first_name = models.CharField(max_length=150, blank=False)
@@ -19,11 +25,6 @@ class CustomUser(AbstractUser):
 
 
 class Order(models.Model):
-    STATUSES = [
-        ('В ожидании', 'В ожидании'),
-        ('Готово', 'Готово'),
-        ('Оплачено', 'Оплачено')
-    ]
     table_number = models.PositiveIntegerField(verbose_name='номер стола')
     status = models.CharField(max_length=20, choices=STATUSES, verbose_name='статус заказа')
     total_price = models.IntegerField(default=0, verbose_name='сумма заказа')
