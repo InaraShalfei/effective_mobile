@@ -2,14 +2,14 @@ from django.forms import inlineformset_factory
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum, Count
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import OrderForm, OrderDishForm, UpdateOrderForm
-from .models import Order, OrderDish
 from django.core.paginator import Paginator
 from django.conf import settings
 from django.db.models import Q
 from django.http import HttpRequest, HttpResponse
 from django.core.handlers.wsgi import WSGIRequest
-from django.utils.translation import ngettext_lazy
+
+from .forms import OrderForm, OrderDishForm, UpdateOrderForm
+from .models import Order, OrderDish
 
 PENDING = 'В ожидании'
 
