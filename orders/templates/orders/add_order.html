@@ -6,9 +6,11 @@
             <div class="card">
                 <div class="card-header text-center"><strong>Добавить заказ</strong></div>
                 <div class="card-body p-5">
+                    {% if items_formset.non_form_errors %}
                     <div class="alert alert-danger" role="alert">
                         {{ items_formset.non_form_errors }}
                     </div>
+                {% endif %}
                     <form method="post">
                         {% csrf_token %}
                         {{ order_form.as_p }}
