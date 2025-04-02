@@ -6,19 +6,15 @@
             <div class="card">
                 <div class="card-header text-center"><strong>Добавить заказ</strong></div>
                 <div class="card-body p-5">
+                    <div class="alert alert-danger" role="alert">
+                        {{ items_formset.non_form_errors }}
+                    </div>
                     <form method="post">
                         {% csrf_token %}
                         {{ order_form.as_p }}
-                            {% for field in order_form %}
-                    {% if field.errors %}
-                        <ul class="errorlist">
-                            {% for error in field.errors %}
-                                <li>{{ error }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% endif %}
-                                {{ items_formset.as_p }}
-                {% endfor %}
+                        {% for field in order_form %}
+                            {{ items_formset.as_p }}
+                        {% endfor %}
                         <button type="submit" class="btn btn-primary">Сохранить</button>
                     </form>
                 </div>
