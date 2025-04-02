@@ -29,10 +29,10 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = ('id', 'table_number', 'status', 'total_price', 'dishes')
 
-    def get_total_price(self, obj):
+    def get_total_price(self, obj: Order) -> int:
         return sum([dish.price for dish in obj.dishes.all()])
 
-    def create(self, validated_data):
+    def create(self, validated_data: dict) -> Order:
         dishes = validated_data.pop('dishes')
         order = Order.objects.create(**validated_data)
 
@@ -41,7 +41,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
         return order
 
-    def update(self, instance, validated_data):
+    def update(self, instance: Order, validated_data: dict) -> Order:
         instance.table_number = validated_data.get('table_number', instance.table_number)
         instance.status = validated_data.get('status', instance.status)
         instance.total_price = validated_data.get('total_price', instance.total_price)

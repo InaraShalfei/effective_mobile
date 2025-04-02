@@ -3,6 +3,9 @@ from .models import Order, OrderDish, STATUSES
 
 
 class OrderForm(forms.ModelForm):
+    """
+        Order form
+    """
     table_number = forms.IntegerField(
         widget=forms.NumberInput(attrs={'class': 'form-control'}),
         min_value=1,
@@ -16,6 +19,9 @@ class OrderForm(forms.ModelForm):
 
 
 class OrderDishForm(forms.ModelForm):
+    """
+        Order's dishes form
+    """
     name = forms.CharField(
         widget=forms.TextInput(attrs={'class': 'form-control'}),
         label='название блюда',
@@ -45,6 +51,9 @@ class OrderDishForm(forms.ModelForm):
 
 
 class UpdateOrderForm(forms.ModelForm):
+    """
+     Form for order updating
+    """
     class Meta:
         model = Order
         fields = ['status']
