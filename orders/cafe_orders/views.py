@@ -55,7 +55,7 @@ def add_order(request: HttpRequest) -> HttpResponse:
         Add new order with dishes (allowed only for authenticated users)
     """
     custom_error_messages = {
-        "too_few_forms": 'Хотя бы %(num)d блюдо по-братски'
+        "too_few_forms": 'Необходимо указать хотя бы %(num)d блюдо'
     }
     formset_factory = inlineformset_factory(Order, OrderDish, form=OrderDishForm, fields=['name', 'price'],
                                             can_delete=False, min_num=1, validate_min=True,
